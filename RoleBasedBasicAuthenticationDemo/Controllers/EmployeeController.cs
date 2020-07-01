@@ -3,21 +3,27 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using System.Web.Security;
 
 namespace RoleBasedBasicAuthenticationDemo.Controllers
 {
     [BasicAuthentication]
+    [EnableCorsAttribute("*", "*", "*")]
     public class EmployeeController : ApiController
-    {
-        
-        [MyAuthorize(Roles = "Admin")]
+    {        
+        [MyAuthorize]
         [Route("api/AllMaleEmployees")]        
         public HttpResponseMessage GetAllMaleEmployees()
         {
-            var EmpList = new EmployeeBL().GetEmployees().Where(x => x.Gender.ToLower() == "male").ToList();
-            return Request.CreateResponse(HttpStatusCode.OK, EmpList);
+            if (CheckRole.CheckRoleForNormalUser())
+            {
+                var EmpList = new EmployeeBL().GetEmployees().Where(x => x.Gender.ToLower() == "male").ToList();
+                return Request.CreateResponse(HttpStatusCode.OK, EmpList);
+            }
+            return Request.CreateErrorResponse(HttpStatusCode.Unauthorized,"You have no access!");
         }
 
         [MyAuthorize(Roles = "SuperAdmin")]

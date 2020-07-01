@@ -6,15 +6,20 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http;
+using System.Web.Http.Cors;
+using System.Web.Mvc;
+using System.Web.UI.WebControls;
 
 namespace BasicAuthenticationDemo.Controllers
 {
     public class EmployeeController : ApiController
     {
         [BasicAuthentication]
+        [EnableCorsAttribute("*", "*", "*")]
         public HttpResponseMessage GetEmployees()
         {
             string username = Thread.CurrentPrincipal.Identity.Name;
+            
             var EmpList = new EmployeeBL().GetEmployees();
             switch (username.ToLower())
             {

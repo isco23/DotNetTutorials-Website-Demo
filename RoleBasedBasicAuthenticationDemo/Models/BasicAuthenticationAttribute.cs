@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
@@ -14,6 +15,7 @@ namespace RoleBasedBasicAuthenticationDemo.Models
     public class BasicAuthenticationAttribute : AuthorizationFilterAttribute
     {
         private const string Realm = "My Realm";
+        private static CustomRoleProvider provider = new CustomRoleProvider();
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if(actionContext.Request.Headers.Authorization == null)
@@ -38,7 +40,10 @@ namespace RoleBasedBasicAuthenticationDemo.Models
                     identity.AddClaim(new Claim("Email", userDetails.Email));
                     identity.AddClaim(new Claim(ClaimTypes.Name, userDetails.UserName));
                     identity.AddClaim(new Claim("ID", Convert.ToString(userDetails.ID)));
-                    IPrincipal principal = new GenericPrincipal(identity, userDetails.Roles.Split(','));
+                    var userRoles = provider.GetRolesForUser(identity.Name);
+                    //IPrincipal principal = new GenericPrincipal(identity, userDetails.RolesName);
+                    IPrincipal principal = new GenericPrincipal(identity, userRoles);
+                    
                     Thread.CurrentPrincipal = principal;
                     if(HttpContext.Current != null)
                     {

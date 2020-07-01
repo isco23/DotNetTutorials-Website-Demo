@@ -19,6 +19,6 @@ namespace RoleBasedBasicAuthenticationDemo.Models
             {
                 actionContext.Response = new System.Net.Http.HttpResponseMessage(System.Net.HttpStatusCode.Forbidden);
             }
-        }
+        }        
     }
 }

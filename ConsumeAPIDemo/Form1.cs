@@ -23,9 +23,10 @@ namespace ConsumeAPIDemo
         private void btnGet_Click(object sender, EventArgs e)
         {
             HttpClient client = new HttpClient();
-            client.DefaultRequestHeaders.Add("Authorization", "TWFsZVVzZXI6MTIzNDU2");
+            client.DefaultRequestHeaders.Add("Authorization", "Basic TWFsZVVzZXI6MTIzNDU2");
             HttpResponseMessage response = client.GetAsync("http://localhost:55390/api/employee").Result;
             var emp = response.Content.ReadAsAsync<IEnumerable<Employee>>().Result;
+            dataGridView1.DataSource = emp;
         }
     }
 }

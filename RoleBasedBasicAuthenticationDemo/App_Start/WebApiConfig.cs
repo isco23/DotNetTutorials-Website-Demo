@@ -10,6 +10,7 @@ namespace RoleBasedBasicAuthenticationDemo
     {
         public static void Register(HttpConfiguration config)
         {
+            config.EnableCors();
             // Web API configuration and services
             config.Filters.Add(new BasicAuthenticationAttribute());
             // Web API routes

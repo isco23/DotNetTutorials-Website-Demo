@@ -5,37 +5,40 @@ using System.Web;
 
 namespace RoleBasedBasicAuthenticationDemo.Models
 {
-    public class UserBL
+    public static class UserBL
     {
-        public List<User> GetUsers()
+        public static List<User> GetUsers()
         {
             // In Realtime you need to get the data from any persistent storage
             // For Simplicity of this demo and to keep focus on Basic Authentication
             // Here we are hardcoded the data
-            List<User> userList = new List<User>();
+            List<User> userList = new List<User>();            
+            userList.Add(new User()
+            {
+                ID = 102,
+                UserName = "NormalUser",
+                Password = "normaluser",
+                Roles = "Admin,Superadmin",
+                Email = "BothUser@a.com",
+                RolesName = new string[] { "normal" , "Normal"}
+            });
             userList.Add(new User()
             {
                 ID = 101,
                 UserName = "AdminUser",
-                Password = "123456",
+                Password = "adminuser",
                 Roles = "Admin",
-                Email = "Admin@a.com"
-            });
-            userList.Add(new User()
-            {
-                ID = 102,
-                UserName = "BothUser",
-                Password = "abcdef",
-                Roles = "Admin,Superadmin",
-                Email = "BothUser@a.com"
+                Email = "Admin@a.com",
+                RolesName = new string[] { "admin", "Admin" }
             });
             userList.Add(new User()
             {
                 ID = 103,
-                UserName = "SuperadminUser",
-                Password = "Password@123",
+                UserName = "Headuser",
+                Password = "headuser",
                 Roles = "Superadmin",
-                Email = "Superadmin@a.com"
+                Email = "Superadmin@a.com",
+                RolesName = new string[] { "head", "Head" }
             });
             return userList;
         }
